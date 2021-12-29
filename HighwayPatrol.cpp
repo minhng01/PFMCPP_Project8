@@ -1,11 +1,15 @@
 #include "HighwayPatrol.h"
+#include "Car.h"
+#include "Motorcycle.h"
+#include "SemiTruck.h"
 #include <iostream>
-#include <cassert>
 
 HighwayPatrol::HighwayPatrol() : Vehicle("HighwayPatrol")
 {
 
 }
+
+HighwayPatrol::~HighwayPatrol() = default;
 
 void HighwayPatrol::scanHighway(Highway* h)
 {
@@ -28,9 +32,16 @@ void HighwayPatrol::pullOver( Vehicle* v, bool willArrest, Highway* h )
     std::cout << name << ": vehicle is traveling " << v->speed - h->speedLimit << " miles per hour over the speed limit" << std::endl;
     if( willArrest )
     {
-        assert(false);
+        std::string vehicleType;
+        if (Car* car = dynamic_cast<Car*>(v))
+            vehicleType = "CAR";
+        else if (Motorcycle* motorcycle = dynamic_cast<Motorcycle*>(v))
+            vehicleType = "MOTORCYCLE";
+        else if (SemiTruck* truck = dynamic_cast<SemiTruck*>(v))
+            vehicleType = "SEMI TRUCK";
+            
         //print the vehicle type in this std::cout between "THE [" and "] PULL". 
-        std::cout << name << ": YOU IN THE [ " << " ] PULL OVER AND SHOW YOUR HANDS" << std::endl;
+        std::cout << name << ": YOU IN THE [ " << vehicleType << " ] PULL OVER AND SHOW YOUR HANDS" << std::endl;
         std::cout << "EVERYONE ELSE, SLOW DOWN!! \n\n\n";
         h->removeVehicle(v);
     }
